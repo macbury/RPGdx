@@ -4,7 +4,10 @@ import de.macbury.rpg.tests.GdxTestRunner;
 import de.macbury.rpg.tests.support.DummyScreen;
 import de.macbury.rpg.tests.support.TestCaseWithRpgGame;
 import de.macbury.screen.BaseScreen;
+import de.macbury.screen.ScreenManager;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 
 import static org.junit.Assert.assertEquals;
@@ -37,6 +40,28 @@ public class TestScreenManager extends TestCaseWithRpgGame {
 
     verify(screen, times(1)).create();
     verify(screen, times(1)).preload();
+  }
+
+  @Test
+  public void disposeScreenOnPopIfMarkedToDispose() {
+    BaseScreen screen = spy(new DummyScreen(game));
+    when(screen.isDisposedAfterHide()).thenReturn(true);
+    game.screens.push(screen);
+    game.screens.pop();
+
+    verify(screen, times(1)).dispose();
+  }
+
+  @Rule
+  public ExpectedException exception = ExpectedException.none();
+
+  @Test
+  public void throwExceptionOnAddingTheSameScreen() {
+    exception.expect(ScreenManager.Exception.class);
+    BaseScreen screen = new DummyScreen(game);
+
+    game.screens.push(screen);
+    game.screens.push(screen);
   }
 
   @Test

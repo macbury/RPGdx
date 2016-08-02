@@ -11,6 +11,11 @@ import java.util.Stack;
  * Manages in game screenStack.
  */
 public class ScreenManager extends GameContext implements Disposable {
+  public class Exception extends RuntimeException {
+    public Exception(String s) {
+      super(s);
+    }
+  };
   private static final String TAG = "ScreenManager";
   /**
    * List of screenStack
@@ -82,7 +87,7 @@ public class ScreenManager extends GameContext implements Disposable {
     }
 
     if (screenStack.contains(nextScreen)) {
-      throw new RuntimeException("Cannot add the same screen twice!");
+      throw new Exception("Cannot add the same screen twice!");
     }
 
     nextScreen.link(this);
