@@ -1,8 +1,9 @@
 # RPGdx
 
+[![Build Status](https://travis-ci.org/macbury/RPGdx.svg?branch=master)](https://travis-ci.org/macbury/RPGdx)
+
 A [LibGDX](http://libgdx.badlogicgames.com/) project generated with [gdx-setup](https://github.com/czyzby/gdx-setup).
 
-Project template included simple launchers and an `ApplicationAdapter` extension with showcase of widgets created using [VisUI](https://github.com/kotcrab/VisEditor/wiki/VisUI) library.
 
 ## Gradle
 
