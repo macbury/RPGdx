@@ -3,5 +3,7 @@ android:
   components:
     - platform-tools
     - tools
-    - android-23
+    - android-22
     - sys-img-armeabi-v7a-android-22
+script:
+  - gradle tests:test

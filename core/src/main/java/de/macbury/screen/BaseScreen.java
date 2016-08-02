@@ -12,7 +12,7 @@ import de.macbury.RPG;
  * Note that {@link #dispose()} is not called automatically.
  * </p>*/
 public abstract class BaseScreen extends GameContext implements ApplicationListener {
-
+  private boolean created;
   /**
    * Automatic link to other context on creation
    *
@@ -44,4 +44,12 @@ public abstract class BaseScreen extends GameContext implements ApplicationListe
    * This method is called before next screen will show
    */
   public abstract void hide ();
+
+  public boolean isCreated() {
+    return created;
+  }
+
+  public void setCreated(boolean created) {
+    this.created = created;
+  }
 }

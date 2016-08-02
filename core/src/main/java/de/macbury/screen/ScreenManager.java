@@ -80,9 +80,18 @@ public class ScreenManager extends GameContext implements Disposable {
     if (getCurrent() != null) {
       hide(getCurrent());
     }
+
+    if (screenStack.contains(nextScreen)) {
+      throw new RuntimeException("Cannot add the same screen twice!");
+    }
+
     nextScreen.link(this);
     screenStack.push(nextScreen);
-    nextScreen.preload();
+    if (!nextScreen.isCreated()) {
+      nextScreen.preload();
+      nextScreen.create();
+      nextScreen.setCreated(true);
+    }
     nextScreen.show();
     nextScreen.resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
   }

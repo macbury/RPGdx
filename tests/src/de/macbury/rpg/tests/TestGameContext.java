@@ -2,6 +2,7 @@ package de.macbury.rpg.tests;
 
 import de.macbury.GameContext;
 import de.macbury.RPG;
+import de.macbury.rpg.tests.support.TestCaseWithRpgGame;
 import de.macbury.screen.BaseScreen;
 import org.junit.After;
 import org.junit.Before;
@@ -12,25 +13,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
-@RunWith(GdxTestRunner.class)
-public class TestGameContext {
-  private RPG game;
-
-  @Before
-  public void configureRPGGame() {
-    this.game = new RPG() {
-      @Override
-      public BaseScreen getInitialBaseScreen() {
-        return null;
-      }
-    };
-  }
-
-  @After
-  public void disposeRPGGame() {
-    game.dispose();
-    game = null;
-  }
+public class TestGameContext extends TestCaseWithRpgGame {
 
   @Test
   public void linkShouldCopyReferencesAndUnlinkShouldRemoveThem() {
