@@ -1,0 +1,23 @@
+apply plugin: 'application'
+
+sourceSets.main.resources.srcDirs += [ rootProject.file('assets').absolutePath ]
+mainClassName = 'de.macbury.editor.DesktopLauncher'
+eclipse.project.name = appName + '-editor'
+sourceCompatibility = 1.7
+
+dependencies {
+  compile project(':desktop')
+  compile "com.kotcrab.vis:vis-ui:$visUiVersion"
+}
+
+jar {
+  archiveName "${appName}-${version}.jar"
+  from { configurations.compile.collect { zipTree(it) } }
+  manifest {
+    attributes 'Main-Class': project.mainClassName
+  }
+}
+
+run {
+  ignoreExitValue = true
+}

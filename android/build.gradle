@@ -42,6 +42,7 @@ configurations { natives }
 
 dependencies {
   compile project(':core')
+  testCompile "junit:junit:4.12"
   compile "com.badlogicgames.gdx:gdx-backend-android:$gdxVersion"
   compile "com.badlogicgames.gdx:gdx-controllers-android:$gdxVersion"
   natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-armeabi"
@@ -116,8 +117,8 @@ eclipse {
   }
 
   jdt {
-    sourceCompatibility = 1.6
-    targetCompatibility = 1.6
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
   }
 
   classpath {

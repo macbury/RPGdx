@@ -1,4 +1,4 @@
-package de.macbury;
+package de.macbury.editor;
 
 import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Gdx;

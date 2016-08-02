@@ -1,4 +1,4 @@
-package de.macbury.desktop;
+package de.macbury.editor;
 
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
@@ -16,7 +16,7 @@ public class DesktopLauncher {
 
   private static LwjglApplicationConfiguration getDefaultConfiguration() {
     LwjglApplicationConfiguration configuration = new LwjglApplicationConfiguration();
-    configuration.title = "RPGdx";
+    configuration.title = "RPGdx Editor";
     configuration.width = 1368;
     configuration.height = 768;
     configuration.vSyncEnabled = true;
