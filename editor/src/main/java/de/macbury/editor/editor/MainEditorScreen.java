@@ -7,18 +7,18 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import com.kotcrab.vis.ui.widget.Menu;
-import com.kotcrab.vis.ui.widget.MenuBar;
-import com.kotcrab.vis.ui.widget.MenuItem;
+import com.kotcrab.vis.ui.widget.*;
 import de.macbury.GameContext;
+import de.macbury.editor.manager.MenuBarManager;
 import de.macbury.screen.BaseScreen;
 
 /**
- * Screen on wich is menu bar, map editor, tileset picker and map painter. All dialogs appear in this screen
+ * Screen on which is menu bar, map editor, tileset picker and map painter. All dialogs appear in this screen
  */
 public class MainEditorScreen extends BaseScreen {
-  private MenuBar menuBar;
+  private static final float MAIN_SPLIT_PANEL_SPLIT_AMOUNT = 0.2f;
   private Stage stage;
+  private MenuBarManager menuBarManger;
 
   /**
    * Automatic link to other context on creation
@@ -36,61 +36,32 @@ public class MainEditorScreen extends BaseScreen {
 
   @Override
   public void create() {
+    menuBarManger = new MenuBarManager();
     stage = new Stage(new ScreenViewport());
-    Table root = new Table();
+    VisTable root = new VisTable();
     root.setFillParent(true);
     stage.addActor(root);
 
-    menuBar = new MenuBar();
-    root.add(menuBar.getTable()).growX().row();
-    root.add().grow();
+    root.add(menuBarManger.getTable()).growX().row();
 
-    createMenus();
+    root.add(new VisLabel("Toolbar")).growX().row();
 
-    //stage.addActor(new TestWindow());
+    VisSplitPane tileAndMapContainer = new VisSplitPane(new VisTable(), new VisTable(), true);
+    VisTable mapEditorContainer  = new VisTable();
+
+    /**
+     * Configure main split panel that splits left panel with tile picker and maps, and map editor
+     */
+    VisSplitPane contentWithMapSplitPane = new VisSplitPane(tileAndMapContainer, mapEditorContainer, false);
+    contentWithMapSplitPane.setMinSplitAmount(MAIN_SPLIT_PANEL_SPLIT_AMOUNT);
+    contentWithMapSplitPane.setMaxSplitAmount(0.5f);
+    contentWithMapSplitPane.setSplitAmount(MAIN_SPLIT_PANEL_SPLIT_AMOUNT);
+    root.add(contentWithMapSplitPane).fill().expand().row();
+
+    root.add(new VisLabel("Status bar!!!!")).growX().row();
   }
 
-  private void createMenus () {
-    Menu startTestMenu = new Menu("start test");
-    Menu fileMenu = new Menu("file");
-    Menu editMenu = new Menu("edit");
 
-    startTestMenu.addItem(new MenuItem("listview", new ChangeListener() {
-        @Override
-        public void changed (ChangeListener.ChangeEvent event, Actor actor) {
-            //stage.addActor(new TestListView());
-        }
-    }));
-
-    startTestMenu.addItem(new MenuItem("tabbed pane", new ChangeListener() {
-        @Override
-        public void changed (ChangeEvent event, Actor actor) {
-            //stage.addActor(new TestTabbedPane());
-        }
-    }));
-
-    startTestMenu.addItem(new MenuItem("collapsible", new ChangeListener() {
-        @Override
-        public void changed (ChangeEvent event, Actor actor) {
-            //stage.addActor(new TestCollapsible());
-        }
-    }));
-
-    //creating dummy menu items for showcase
-    fileMenu.addItem(new MenuItem("menuitem #1"));
-    fileMenu.addItem(new MenuItem("menuitem #2").setShortcut("f1"));
-    fileMenu.addItem(new MenuItem("menuitem #3").setShortcut("f2"));
-
-    editMenu.addItem(new MenuItem("menuitem #4"));
-    editMenu.addItem(new MenuItem("menuitem #5"));
-    editMenu.addSeparator();
-    editMenu.addItem(new MenuItem("menuitem #6"));
-    editMenu.addItem(new MenuItem("menuitem #7"));
-
-    menuBar.addMenu(startTestMenu);
-    menuBar.addMenu(fileMenu);
-    menuBar.addMenu(editMenu);
-  }
 
   @Override
   public void show() {
@@ -119,6 +90,7 @@ public class MainEditorScreen extends BaseScreen {
 
   @Override
   public void render() {
+    Gdx.gl.glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
     Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
     stage.draw();
   }
