@@ -1,12 +1,7 @@
 language: android
 android:
   components:
-    - build-tools-23.0.0
-    - android-L
-    - sys-img-x86-android-tv-l
-    - add-on
-    - extra
-  licenses:
-    - 'android-sdk-preview-license-52d11cd2'
-    - 'android-sdk-license-.+'
-    - 'google-gdk-license-.+'
+    - platform-tools
+    - tools
+    - android-23
+    - sys-img-armeabi-v7a-android-22

@@ -10,6 +10,7 @@ import org.junit.runner.RunWith;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 @RunWith(GdxTestRunner.class)
 public class TestGameContext {
@@ -32,9 +33,13 @@ public class TestGameContext {
   }
 
   @Test
-  public void linkShouldCopyReferences() {
+  public void linkShouldCopyReferencesAndUnlinkShouldRemoveThem() {
     GameContext gameContext = new GameContext(game) {};
     assertNotNull(gameContext.screens);
     assertEquals(game.screens, gameContext.screens);
+
+    gameContext.unlink();
+    assertNull(gameContext.screens);
   }
+
 }
