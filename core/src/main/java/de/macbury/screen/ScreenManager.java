@@ -24,7 +24,6 @@ public class ScreenManager extends GameContext implements Disposable {
 
   public ScreenManager(RPG rpg) {
     super(rpg);
-    Gdx.app.debug(TAG, "Initialized");
     screenStack = new Stack<BaseScreen>();
   }
 
@@ -90,12 +89,19 @@ public class ScreenManager extends GameContext implements Disposable {
       throw new Exception("Cannot add the same screen twice!");
     }
 
+    if (nextScreen == null) {
+      throw new Exception("Passed null screen");
+    }
+
     nextScreen.link(this);
     screenStack.push(nextScreen);
     if (!nextScreen.isCreated()) {
+      Gdx.app.debug(TAG, "Preload and create screen " + nextScreen.toString());
       nextScreen.preload();
       nextScreen.create();
       nextScreen.setCreated(true);
+    } else {
+      Gdx.app.debug(TAG, "Show screen " + nextScreen.toString());
     }
     nextScreen.show();
     nextScreen.resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());

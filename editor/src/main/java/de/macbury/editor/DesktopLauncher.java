@@ -2,7 +2,7 @@ package de.macbury.editor;
 
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
-import de.macbury.RPG;
+import de.macbury.editor.editor.RPGEditor;
 
 /** Launches the desktop (LWJGL) application. */
 public class DesktopLauncher {
@@ -11,7 +11,7 @@ public class DesktopLauncher {
   }
 
   private static LwjglApplication createApplication() {
-    return new LwjglApplication(new RPG(), getDefaultConfiguration());
+    return new LwjglApplication(new RPGEditor(), getDefaultConfiguration());
   }
 
   private static LwjglApplicationConfiguration getDefaultConfiguration() {

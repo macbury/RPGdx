@@ -11,7 +11,7 @@ import de.macbury.RPG;
  * <p>
  * Note that {@link #dispose()} is not called automatically.
  * </p>*/
-public abstract class BaseScreen extends GameContext implements ApplicationListener {
+public abstract class BaseScreen extends GameContext implements ApplicationListener, Disposable {
   private boolean created;
   /**
    * Automatic link to other context on creation

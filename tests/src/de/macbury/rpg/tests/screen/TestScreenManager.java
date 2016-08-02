@@ -65,6 +65,12 @@ public class TestScreenManager extends TestCaseWithRpgGame {
   }
 
   @Test
+  public void throwExceptionIfTriesToAddNull() {
+    exception.expect(ScreenManager.Exception.class);
+    game.screens.push(null);
+  }
+
+  @Test
   public void popScreenShouldUnlinkScreen() {
     BaseScreen screen = mock(BaseScreen.class);
 
