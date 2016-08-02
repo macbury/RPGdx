@@ -7,10 +7,11 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import de.macbury.screen.BaseScreen;
 import de.macbury.screen.ScreenManager;
 
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
-public class RPG extends GameContext implements ApplicationListener {
+public abstract class RPG extends GameContext implements ApplicationListener {
   //private MenuBar menuBar;
   private Stage stage;
 
@@ -25,21 +26,29 @@ public class RPG extends GameContext implements ApplicationListener {
   public void create () {
     //VisUI.load(SkinScale.X1);
 
-    stage = new Stage(new ScreenViewport());
-    Gdx.input.setInputProcessor(stage);
+    //stage = new Stage(new ScreenViewport());
+    //Gdx.input.setInputProcessor(stage);
 
-    Table root = new Table();
-    root.setFillParent(true);
-    stage.addActor(root);
+    //Table root = new Table();
+    //root.setFillParent(true);
+    //stage.addActor(root);
 
     //menuBar = new MenuBar();
     //root.add(menuBar.getTable()).growX().row();
-    root.add().grow();
+    //root.add().grow();
 
-    createMenus();
+    //createMenus();
 
     //stage.addActor(new TestWindow());
+
+    screens.set(getInitialBaseScreen());
   }
+
+  /**
+   * Create and return {@link BaseScreen} that you want to be first
+   * @return
+   */
+  public abstract BaseScreen getInitialBaseScreen();
 
   @Override
   public void pause() {
@@ -111,6 +120,6 @@ public class RPG extends GameContext implements ApplicationListener {
   public void dispose () {
     screens.dispose();
     //VisUI.dispose();
-    stage.dispose();
+    ///stage.dispose();
   }
 }

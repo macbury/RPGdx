@@ -8,18 +8,19 @@ import de.macbury.RPG;
 import java.util.Stack;
 
 /**
- * Manages in game screens.
+ * Manages in game screenStack.
  */
 public class ScreenManager extends GameContext implements Disposable {
   private static final String TAG = "ScreenManager";
   /**
-   * List of screens
+   * List of screenStack
    */
-  private Stack<BaseScreen> screens;
+  private Stack<BaseScreen> screenStack;
 
   public ScreenManager(RPG rpg) {
     super(rpg);
-    screens = new Stack<BaseScreen>();
+    Gdx.app.debug(TAG, "Initialized");
+    screenStack = new Stack<BaseScreen>();
   }
 
   /**
@@ -27,10 +28,10 @@ public class ScreenManager extends GameContext implements Disposable {
    * @return
    */
   public BaseScreen getCurrent() {
-    if (screens.empty()) {
+    if (screenStack.empty()) {
       return null;
     }
-    return screens.peek();
+    return screenStack.peek();
   }
 
   /**
@@ -41,7 +42,10 @@ public class ScreenManager extends GameContext implements Disposable {
     screen.hide();
     if (screen.isDisposedAfterHide()) {
       screen.dispose();
-      screens.remove(screen);
+      screenStack.remove(screen);
+      Gdx.app.debug(TAG, "Hided and disposed screen: " + screen.toString());
+    } else {
+      Gdx.app.debug(TAG, "Hide " + screen.toString());
     }
     screen.unlink();
   }
@@ -51,16 +55,25 @@ public class ScreenManager extends GameContext implements Disposable {
    * @param nextScreen
    */
   public void set(BaseScreen nextScreen) {
-    BaseScreen currentScreen = getCurrent();
-    if (currentScreen != null) {
-      hide(screens.pop());
-    }
-
+    pop();
     push(nextScreen);
   }
 
   /**
-   * Adds next screen to stack
+   * Removes current screen from stack
+   * @return current screen or null
+   */
+  public BaseScreen pop() {
+    BaseScreen currentScreen = getCurrent();
+    if (currentScreen != null) {
+      Gdx.app.debug(TAG, "Removed old screen from stack " + currentScreen.toString());
+      hide(screenStack.pop());
+    }
+    return currentScreen;
+  }
+
+  /**
+   * Adds next screen to stack, and hides old one
    * @param nextScreen
    */
   public void push(BaseScreen nextScreen) {
@@ -68,12 +81,11 @@ public class ScreenManager extends GameContext implements Disposable {
       hide(getCurrent());
     }
     nextScreen.link(this);
-    screens.push(nextScreen);
+    screenStack.push(nextScreen);
     nextScreen.preload();
     nextScreen.show();
     nextScreen.resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
   }
-
 
   /**
    * Update size of current screen
@@ -122,8 +134,8 @@ public class ScreenManager extends GameContext implements Disposable {
 
   @Override
   public void dispose() {
-    while (!screens.empty()) {
-      screens.pop().dispose();
+    while (!screenStack.empty()) {
+      screenStack.pop().dispose();
     }
     super.dispose();
   }
