@@ -2,7 +2,7 @@ package de.macbury.rpg.tests.support;
 
 import de.macbury.RPG;
 import de.macbury.rpg.tests.GdxTestRunner;
-import de.macbury.screen.BaseScreen;
+import de.macbury.screen.AbstractScreen;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.runner.RunWith;
@@ -15,10 +15,12 @@ public abstract class TestCaseWithRpgGame {
   public void configureRPGGame() {
     this.game = new RPG() {
       @Override
-      public BaseScreen getInitialBaseScreen() {
-        return null;
+      protected void onGameCreate() {
+
       }
     };
+
+    game.create();
   }
 
   @After

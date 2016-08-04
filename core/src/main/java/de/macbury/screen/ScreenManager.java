@@ -20,18 +20,18 @@ public class ScreenManager extends GameContext implements Disposable {
   /**
    * List of screenStack
    */
-  private Stack<BaseScreen> screenStack;
+  private Stack<AbstractScreen> screenStack;
 
   public ScreenManager(RPG rpg) {
     super(rpg);
-    screenStack = new Stack<BaseScreen>();
+    screenStack = new Stack<AbstractScreen>();
   }
 
   /**
    * Reference to current screen
    * @return
    */
-  public BaseScreen getCurrent() {
+  public AbstractScreen getCurrent() {
     if (screenStack.empty()) {
       return null;
     }
@@ -39,10 +39,10 @@ public class ScreenManager extends GameContext implements Disposable {
   }
 
   /**
-   * Hides screen, unlinks it dependency, and dispose if {@link BaseScreen#isDisposedAfterHide()} is true
+   * Hides screen, unlinks it dependency, and dispose if {@link AbstractScreen#isDisposedAfterHide()} is true
    * @param screen
    */
-  private void hide(BaseScreen screen) {
+  private void hide(AbstractScreen screen) {
     screen.hide();
     if (screen.isDisposedAfterHide()) {
       screen.dispose();
@@ -58,7 +58,7 @@ public class ScreenManager extends GameContext implements Disposable {
    * Removes screen from stack and replace it with nextScreen
    * @param nextScreen
    */
-  public void set(BaseScreen nextScreen) {
+  public void set(AbstractScreen nextScreen) {
     pop();
     push(nextScreen);
   }
@@ -67,8 +67,8 @@ public class ScreenManager extends GameContext implements Disposable {
    * Removes current screen from stack
    * @return current screen or null
    */
-  public BaseScreen pop() {
-    BaseScreen currentScreen = getCurrent();
+  public AbstractScreen pop() {
+    AbstractScreen currentScreen = getCurrent();
     if (currentScreen != null) {
       Gdx.app.debug(TAG, "Removed old screen from stack " + currentScreen.toString());
       hide(screenStack.pop());
@@ -80,7 +80,7 @@ public class ScreenManager extends GameContext implements Disposable {
    * Adds next screen to stack, and hides old one
    * @param nextScreen
    */
-  public void push(BaseScreen nextScreen) {
+  public void push(AbstractScreen nextScreen) {
     if (getCurrent() != null) {
       hide(getCurrent());
     }
@@ -98,6 +98,7 @@ public class ScreenManager extends GameContext implements Disposable {
     if (!nextScreen.isCreated()) {
       Gdx.app.debug(TAG, "Preload and create screen " + nextScreen.toString());
       nextScreen.preload();
+      assets.finishLoading(); //TODO show loading screen
       nextScreen.create();
       nextScreen.setCreated(true);
     } else {
@@ -124,7 +125,7 @@ public class ScreenManager extends GameContext implements Disposable {
    */
   public void tick(float delta) {
     if (haveCurrentScreen()) {
-      BaseScreen screen = getCurrent();
+      AbstractScreen screen = getCurrent();
       screen.update(delta);
       screen.render();
     }

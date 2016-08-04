@@ -3,8 +3,9 @@ package de.macbury.desktop;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import de.macbury.RPG;
-import de.macbury.screen.BaseScreen;
+import de.macbury.screen.AbstractScreen;
 import de.macbury.screen.TestScreen;
+import de.macbury.screen.TestTilesetsDrawScreen;
 
 /** Launches the desktop (LWJGL) application. */
 public class DesktopLauncher {
@@ -13,13 +14,7 @@ public class DesktopLauncher {
   }
 
   private static LwjglApplication createApplication() {
-    RPG game = new RPG() {
-      @Override
-      public BaseScreen getInitialBaseScreen() {
-        return new TestScreen(this);
-      }
-    };
-    return new LwjglApplication(game, getDefaultConfiguration());
+    return new LwjglApplication(new DesktopRPG(), getDefaultConfiguration());
   }
 
   private static LwjglApplicationConfiguration getDefaultConfiguration() {

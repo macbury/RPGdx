@@ -1,12 +1,12 @@
 package de.macbury.rpg.tests.support;
 
 import de.macbury.GameContext;
-import de.macbury.screen.BaseScreen;
+import de.macbury.screen.AbstractScreen;
 
 /**
  * Created by macbury on 02.08.16.
  */
-public class DummyScreen extends BaseScreen {
+public class DummyScreen extends AbstractScreen {
   /**
    * Automatic link to other context on creation
    *

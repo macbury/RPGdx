@@ -1,10 +1,10 @@
-package de.macbury.editor.editor;
+package de.macbury.editor.core;
 
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.kotcrab.vis.ui.VisUI;
 import de.macbury.RPG;
-import de.macbury.screen.BaseScreen;
+import de.macbury.screen.AbstractScreen;
 
 /**
  * Main context for rpg editor with viszui
@@ -12,20 +12,15 @@ import de.macbury.screen.BaseScreen;
 public class RPGEditor extends RPG {
 
   @Override
-  public void create() {
+  protected void onGameCreate() {
     VisUI.load(VisUI.SkinScale.X1);
     Gdx.app.setLogLevel(Application.LOG_DEBUG);
-    super.create();
+    screens.set(new MainEditorScreen(this));
   }
 
   @Override
   public void dispose() {
     super.dispose();
     VisUI.dispose();
-  }
-
-  @Override
-  public BaseScreen getInitialBaseScreen() {
-    return new MainEditorScreen(this);
   }
 }

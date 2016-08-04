@@ -1,24 +1,29 @@
-package de.macbury.editor.editor;
+package de.macbury.editor.core;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.kotcrab.vis.ui.widget.*;
 import de.macbury.GameContext;
+import de.macbury.editor.manager.MainStatusBarManager;
+import de.macbury.editor.manager.MainToolBarManager;
 import de.macbury.editor.manager.MenuBarManager;
-import de.macbury.screen.BaseScreen;
+import de.macbury.editor.manager.TilesetsEditorManager;
+import de.macbury.editor.state.EditorState;
+import de.macbury.screen.AbstractScreen;
 
 /**
  * Screen on which is menu bar, map editor, tileset picker and map painter. All dialogs appear in this screen
  */
-public class MainEditorScreen extends BaseScreen {
+public class MainEditorScreen extends AbstractScreen {
   private static final float MAIN_SPLIT_PANEL_SPLIT_AMOUNT = 0.2f;
+  private final EditorState state;
   private Stage stage;
   private MenuBarManager menuBarManger;
+  private MainToolBarManager mainToolbarManager;
+  private MainStatusBarManager statusBarManager;
+  private TilesetsEditorManager tilesetsEditorManager;
 
   /**
    * Automatic link to other context on creation
@@ -27,6 +32,7 @@ public class MainEditorScreen extends BaseScreen {
    */
   public MainEditorScreen(GameContext otherContext) {
     super(otherContext);
+    this.state = new EditorState();
   }
 
   @Override
@@ -36,15 +42,20 @@ public class MainEditorScreen extends BaseScreen {
 
   @Override
   public void create() {
-    menuBarManger = new MenuBarManager();
+    menuBarManger      = new MenuBarManager(state);
+    mainToolbarManager = new MainToolBarManager(state);
+    statusBarManager   = new MainStatusBarManager(state);
+    tilesetsEditorManager = new TilesetsEditorManager(state);
+
     stage = new Stage(new ScreenViewport());
     VisTable root = new VisTable();
     root.setFillParent(true);
     stage.addActor(root);
 
+    // main menu
     root.add(menuBarManger.getTable()).growX().row();
-
-    root.add(new VisLabel("Toolbar")).growX().row();
+    //main toolbar
+    root.add(mainToolbarManager.getTable()).growX().row();
 
     VisSplitPane tileAndMapContainer = new VisSplitPane(new VisTable(), new VisTable(), true);
     VisTable mapEditorContainer  = new VisTable();
@@ -58,10 +69,11 @@ public class MainEditorScreen extends BaseScreen {
     contentWithMapSplitPane.setSplitAmount(MAIN_SPLIT_PANEL_SPLIT_AMOUNT);
     root.add(contentWithMapSplitPane).fill().expand().row();
 
-    root.add(new VisLabel("Status bar!!!!")).growX().row();
+    // status bar
+    root.add(statusBarManager.getTable()).growX().row();
+
+    stage.addActor(tilesetsEditorManager.getWindow());
   }
-
-
 
   @Override
   public void show() {
@@ -70,6 +82,7 @@ public class MainEditorScreen extends BaseScreen {
 
   @Override
   public void update(float delta) {
+    state.update();
     stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
   }
 
@@ -108,6 +121,7 @@ public class MainEditorScreen extends BaseScreen {
   @Override
   public void dispose() {
     stage.dispose();
+    state.dispose();
     super.dispose();
   }
 }

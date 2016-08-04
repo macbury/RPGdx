@@ -1,37 +1,32 @@
 package de.macbury;
 
-import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import de.macbury.screen.BaseScreen;
+import de.macbury.assets.Assets;
+import de.macbury.screen.AbstractScreen;
 import de.macbury.screen.ScreenManager;
 
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
 public abstract class RPG extends GameContext implements ApplicationListener {
-  //private MenuBar menuBar;
-  //private Stage stage;
-
   /**
    * Reference all managers here
    */
   public RPG() {
     this.screens = new ScreenManager(this);
+    this.assets  = new Assets();
   }
 
   @Override
   public void create () {
-    screens.set(getInitialBaseScreen());
+    screens.link(this);
+
+    onGameCreate();
   }
 
   /**
-   * Create and return {@link BaseScreen} that you want to be first
-   * @return
+   * Initialize platform specific objects here
    */
-  public abstract BaseScreen getInitialBaseScreen();
+  protected abstract void onGameCreate();
 
   @Override
   public void pause() {
@@ -42,8 +37,6 @@ public abstract class RPG extends GameContext implements ApplicationListener {
   public void resume() {
     screens.resume();
   }
-
-
 
   @Override
   public void resize (int width, int height) {

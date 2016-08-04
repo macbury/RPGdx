@@ -5,7 +5,7 @@ import de.macbury.GameContext;
 /**
  * Created by macbury on 02.08.16.
  */
-public class TestScreen extends BaseScreen {
+public class TestScreen extends AbstractScreen {
   /**
    * Automatic link to other context on creation
    * @param otherContext

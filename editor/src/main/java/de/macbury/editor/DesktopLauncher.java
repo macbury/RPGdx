@@ -2,7 +2,7 @@ package de.macbury.editor;
 
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
-import de.macbury.editor.editor.RPGEditor;
+import de.macbury.editor.core.RPGEditor;
 
 /** Launches the desktop (LWJGL) application. */
 public class DesktopLauncher {

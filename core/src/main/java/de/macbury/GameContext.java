@@ -1,6 +1,7 @@
 package de.macbury;
 
 import com.badlogic.gdx.utils.Disposable;
+import de.macbury.assets.Assets;
 import de.macbury.screen.ScreenManager;
 
 /**
@@ -11,6 +12,7 @@ public abstract class GameContext implements Disposable {
    * Manage in game screens
    */
   public ScreenManager screens;
+  public Assets assets;
 
   /**
    * Automatic link to other context on creation
@@ -31,6 +33,7 @@ public abstract class GameContext implements Disposable {
 
   public void link(GameContext context) {
     screens = context.screens;
+    assets  = context.assets;
   }
 
   /**
@@ -38,6 +41,7 @@ public abstract class GameContext implements Disposable {
    */
   public void unlink() {
     screens = null;
+    assets  = null;
   }
 
   @Override

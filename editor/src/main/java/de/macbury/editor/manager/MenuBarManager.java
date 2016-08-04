@@ -1,21 +1,30 @@
 package de.macbury.editor.manager;
 
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.kotcrab.vis.ui.widget.Menu;
 import com.kotcrab.vis.ui.widget.MenuBar;
 import com.kotcrab.vis.ui.widget.MenuItem;
+import de.macbury.editor.state.EditorState;
+import de.macbury.editor.state.StateChangeListener;
+import de.macbury.editor.state.actions.OpenTilesetsEditorAction;
 
 /**
  * Creates main menu bar in editor
  */
-public class MenuBarManager {
+public class MenuBarManager implements ITableProvider, StateChangeListener {
   private final MenuBar menuBar;
+  private final EditorState state;
+  private MenuItem tilesetsEditorMenuItem;
 
-  public MenuBarManager() {
+  public MenuBarManager(EditorState state) {
+    this.state = state;
     menuBar = new MenuBar();
-    createFileMenu();
-    createEditMenu();
     createGameMenu();
+    createEditMenu();
+
+    state.addListener(this);
   }
 
   private void createEditMenu() {
@@ -32,17 +41,20 @@ public class MenuBarManager {
     Menu menu = new Menu("Game");
     menuBar.addMenu(menu);
 
-    menu.addItem(createMenuItem("Tilesets", "F10"));
-  }
+    menu.addItem(createMenuItem("Characters/Classes", "ctrl+1"));
+    menu.addItem(createMenuItem("Items", "Ctrl+2"));
+    menu.addItem(createMenuItem("Monsters", "Ctrl+3"));
+    tilesetsEditorMenuItem = createMenuItem("Tilesets", "ctrl + 4");
+    menu.addItem(tilesetsEditorMenuItem);
+    tilesetsEditorMenuItem.addListener(new ChangeListener() {
+      @Override
+      public void changed(ChangeEvent event, Actor actor) {
+        state.dispatch(new OpenTilesetsEditorAction());
+      }
+    });
 
-  private void createFileMenu() {
-    Menu menu = new Menu("File");
-    menuBar.addMenu(menu);
-
-    menu.addItem(createMenuItem("New Project...", "Ctrl+N"));
-    menu.addItem(createMenuItem("Load Project...", "Ctrl+O"));
-    menu.addItem(createMenuItem("Close Project", null));
-
+    menu.addSeparator();
+    menu.addItem(createMenuItem("Run", "F5"));
     menu.addSeparator();
 
     menu.addItem(createMenuItem("Exit", "Esc"));
@@ -54,57 +66,17 @@ public class MenuBarManager {
    * @return
    */
   private MenuItem createMenuItem(String text, String shortcut) {
-    MenuItem menuItem = new MenuItem(text);
-    menuItem.setShortcut(shortcut);
+    final MenuItem menuItem = new MenuItem(text);
+    //menuItem.setShortcut(shortcut);
     return menuItem;
   }
-
+  @Override
   public Table getTable() {
     return menuBar.getTable();
   }
-}
-/*
 
+  @Override
+  public void onStateChange(EditorState state) {
 
-private void createMenus () {
-    Menu startTestMenu = new Menu("File");
-    Menu fileMenu = new Menu("file");
-    Menu editMenu = new Menu("edit");
-
-    startTestMenu.addItem(new MenuItem("listview", new ChangeListener() {
-        @Override
-        public void changed (ChangeListener.ChangeEvent event, Actor actor) {
-            //stage.addActor(new TestListView());
-        }
-    }));
-
-    startTestMenu.addItem(new MenuItem("tabbed pane", new ChangeListener() {
-        @Override
-        public void changed (ChangeEvent event, Actor actor) {
-            //stage.addActor(new TestTabbedPane());
-        }
-    }));
-
-    startTestMenu.addItem(new MenuItem("collapsible", new ChangeListener() {
-        @Override
-        public void changed (ChangeEvent event, Actor actor) {
-            //stage.addActor(new TestCollapsible());
-        }
-    }));
-
-    //creating dummy menu items for showcase
-    fileMenu.addItem(new MenuItem("menuitem #1"));
-    fileMenu.addItem(new MenuItem("menuitem #2").setShortcut("f1"));
-    fileMenu.addItem(new MenuItem("menuitem #3").setShortcut("f2"));
-
-    editMenu.addItem(new MenuItem("menuitem #4"));
-    editMenu.addItem(new MenuItem("menuitem #5"));
-    editMenu.addSeparator();
-    editMenu.addItem(new MenuItem("menuitem #6"));
-    editMenu.addItem(new MenuItem("menuitem #7"));
-
-    menuBar.addMenu(startTestMenu);
-    menuBar.addMenu(fileMenu);
-    menuBar.addMenu(editMenu);
   }
- */
+}
