@@ -25,7 +25,6 @@ public class GameCamera extends OrthographicCamera {
     float vWidth  = numberOfTilesForSmallerSide * aspectRatio;
     float vHeight =  numberOfTilesForSmallerSide;
 
-
     setToOrtho(false, vWidth, vHeight);
   }
 }
